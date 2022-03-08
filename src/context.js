@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useReducer } from "react";
 import {
   SET_LOADING,
+  SET_PAGE,
   SET_REMOVE,
   SET_SEARCH,
   SET_STORIES,
@@ -30,6 +31,10 @@ const AppProvider = (props) => {
     dispatch({ type: SET_SEARCH, payload: query });
   };
 
+  const handlePage = (value) => {
+    dispatch({ type: SET_PAGE, payload: value });
+  };
+
   const fetchStories = async (url) => {
     dispatch({ type: SET_LOADING });
     try {
@@ -48,11 +53,11 @@ const AppProvider = (props) => {
     fetchStories(
       `${API_ENDPOINT}query=${state.query}&page=${state.page}`
     );
-  }, [state.query]);
+  }, [state.query, state.page]);
 
   return (
     <AppContext.Provider
-      value={{ ...state, removeStory, handleSearch }}
+      value={{ ...state, removeStory, handleSearch, handlePage }}
     >
       {props.children}
     </AppContext.Provider>
