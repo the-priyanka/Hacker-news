@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useReducer } from "react";
-import { SET_LOADING, SET_STORIES } from "./actions";
+import { SET_LOADING, SET_REMOVE, SET_STORIES } from "./actions";
 import reducer from "./reducer";
 
 const API_ENDPOINT = "https://hn.algolia.com/api/v1/search?";
@@ -16,6 +16,10 @@ const AppContext = React.createContext();
 
 const AppProvider = (props) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  const removeStory = (id) => {
+    dispatch({ type: SET_REMOVE, payload: id });
+  };
 
   const fetchStories = async (url) => {
     dispatch({ type: SET_LOADING });
@@ -38,7 +42,7 @@ const AppProvider = (props) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ ...state }}>
+    <AppContext.Provider value={{ ...state, removeStory }}>
       {props.children}
     </AppContext.Provider>
   );
